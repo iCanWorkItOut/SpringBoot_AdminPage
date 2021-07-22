@@ -29,7 +29,8 @@ public class OrderDetail {
     private String createdBy;
     private LocalDateTime updatedAt;
     private String updatedBy;
-//    private LocalDateTime orderAt;
+    private long itemId;
+    private long orderGroupId;
 
 // ERD 설계 전 맵핑 코드
 //    // OrderDetail의 입장에서 기술
