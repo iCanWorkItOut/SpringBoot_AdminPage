@@ -16,8 +16,9 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> { // <T, ID> -> T : 엔티티, ID : 기본키 자료형
 
-    Optional<User> findByAccount(String account); // 쿼리메소드(쿼리문을 메소드로) == (SELECT * FROM user WHERE account = ?)
-    Optional<User> findByEmail(String email);
-    // SELECT * FROM user WHERE account = ? AND email = ?
-    Optional<User> findByAccountAndEmail(String account, String email);
+// ERD 설계 전 코드
+//    Optional<User> findByAccount(String account); // 쿼리메소드(쿼리문을 메소드로) == (SELECT * FROM user WHERE account = ?)
+//    Optional<User> findByEmail(String email);
+//    // SELECT * FROM user WHERE account = ? AND email = ?
+//    Optional<User> findByAccountAndEmail(String account, String email);
 }

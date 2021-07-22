@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data    @AllArgsConstructor    @NoArgsConstructor
@@ -14,12 +15,22 @@ public class Item {
 
     @Id    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private String status;
     private String name;
-    private int price;
+    private String title;
     private String content;
+    private int price;
+    private String brand_name;
+    private LocalDateTime registeredAt;
+    private LocalDateTime unregisteredAt;
+    private LocalDateTime createdAt;
+    private String createdBy;
+    private LocalDateTime updatedAt;
+    private String updatedBy;
 
-    // fetch 타입 : LAZY = 지연로딩, EAGER = 즉시로딩
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
-    private List<OrderDetail> orderDetailList;
+// ERD 설계 전 맵핑 코드
+//    // fetch 타입 : LAZY = 지연로딩, EAGER = 즉시로딩
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+//    private List<OrderDetail> orderDetailList;
 
 }
