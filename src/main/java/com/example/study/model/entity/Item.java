@@ -20,13 +20,14 @@ public class Item {
     private String title;
     private String content;
     private int price;
-    private String brand_name;
+    private String brandName;
     private LocalDateTime registeredAt;
     private LocalDateTime unregisteredAt;
     private LocalDateTime createdAt;
     private String createdBy;
     private LocalDateTime updatedAt;
     private String updatedBy;
+    private long partnerId;
 
 // ERD 설계 전 맵핑 코드
 //    // fetch 타입 : LAZY = 지연로딩, EAGER = 즉시로딩
