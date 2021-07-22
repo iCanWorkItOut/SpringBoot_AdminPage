@@ -4,6 +4,7 @@ package com.example.study.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Data    @AllArgsConstructor    @NoArgsConstructor
 @Entity // == table
+@ToString(exclude = "orderGroupList")
 //@Table(name = "user") 클래스명(User)와 테이블명이 같을 경우 생략 가능
 public class User {
 
@@ -39,5 +41,6 @@ public class User {
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user") // mappedBy : 어떤 컬럼에 맵핑시킬 것인지 -> OrderDetail에서 맵핑시키는 변수명과 일치해야 함
 //    private List<OrderDetail> orderDetailList;
 
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user") // User:OrderGroup = 1:N
+    private List<OrderGroup> orderGroupList;
 }
