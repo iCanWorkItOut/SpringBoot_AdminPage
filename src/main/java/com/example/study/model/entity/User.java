@@ -1,10 +1,13 @@
 package com.example.study.model.entity;
 
 //import javax.persistence.Column;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,9 +15,12 @@ import java.util.List;
 //import javax.persistence.Table;
 
 @Data    @AllArgsConstructor    @NoArgsConstructor
+@Builder // 빌더 패턴(lombok의 생성자 패턴) : 빌더를 사용하면 생성자가 없어도 원하는 조건으로 인스턴스 생성 가능
+@Accessors(chain = true) // 체인접근자 패턴(lombok의 setter 패턴) : setter를 일일히 호출하지 않고 체이닝을 통해 설정 가능
 @Entity // == table
 @ToString(exclude = "orderGroupList")
 //@Table(name = "user") 클래스명(User)와 테이블명이 같을 경우 생략 가능
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id // 식별자(Primarykey)
@@ -31,9 +37,13 @@ public class User {
     private String phoneNumber;
     private LocalDateTime registeredAt;
     private LocalDateTime unregisteredAt;
+    @CreatedDate
     private LocalDateTime createdAt;
+    @CreatedBy
     private String createdBy;
+    @LastModifiedDate
     private LocalDateTime updatedAt;
+    @LastModifiedBy
     private String updatedBy;
 
 // ERD 설계 전 맵핑코드

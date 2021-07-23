@@ -35,11 +35,11 @@ public class UserRepositoryTest extends StudyApplicationTests {
 //        // 반환받은 newUser에는 위의 set으로 설정한 값들이 저장되고 id 또한 자동(AutoIncrement)설정 되어 있다.
 //        System.out.println("newUser : " + newUser);
 
-        String account = "Test01";
-        String password = "Test01";
+        String account = "Test03";
+        String password = "Test03";
         String status = "REGISTERED";
         String email = "Test01@gmail.com";
-        String phoneNumber = "010-1111-2222";
+        String phoneNumber = "010-1111-3333";
         LocalDateTime registeredAt = LocalDateTime.now();
         LocalDateTime createdAt = LocalDateTime.now();
         String createdBy = "AdminServer";
@@ -51,9 +51,12 @@ public class UserRepositoryTest extends StudyApplicationTests {
         user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
         user.setRegisteredAt(registeredAt);
-        user.setCreatedAt(createdAt);
-        user.setCreatedBy(createdBy);
+//        user.setCreatedAt(createdAt);
+//        user.setCreatedBy(createdBy);
 
+        // 빌더를 사용하면 생성자가 없어도 원하는 조건으로 인스턴스 생성 가능
+        User u = User.builder().account(account).password(password).status(status).email(email).build();
+        // == User u = new User(account, password, status, email); // 조건에 맞는 생성자가 있어야함.
         User newUser = userRepository.save(user);
 
         Assertions.assertNotNull(newUser);
@@ -73,6 +76,13 @@ public class UserRepositoryTest extends StudyApplicationTests {
 //        });
 
         User user = userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-2222");
+
+        // @Accessors(chain = true) 사용 예시
+        // user.setEmail("").setPhoneNumber("").setStatus("");
+        // == user.setEmail("");    user.setPhoneNumber("");    user.setStatus("");
+        // 인스턴스 생성 시 사용할 수 도 있음(초기화)
+        // User user = new User().setAccount("").setEmail("").setPassword("");
+
         if(user != null) {
             user.getOrderGroupList().stream().forEach(orderGroup -> {
 

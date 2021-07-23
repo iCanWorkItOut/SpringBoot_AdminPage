@@ -1,17 +1,23 @@
 package com.example.study.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data    @AllArgsConstructor    @NoArgsConstructor
+@Builder
+@Accessors(chain = true)
 @ToString(exclude = {"orderGroup", "item"})
 @Entity // order_detail
+@EntityListeners(AuditingEntityListener.class)
 //// 롬복 사용시 ToString메소드가 모든 변수를 참조하게 되는데,
 //// 관계 맵핑 때문에 선언한 User, Item 객체 역시 참조하게 되어, 서로 상호참조하게 됨.
 //// 이후 ToString 메소드를 호출하게되면 상호참조로 인한 오버플로우가 발생하게 되므로,
@@ -26,9 +32,13 @@ public class OrderDetail {
     private LocalDateTime arrivalDate;
     private int quantity;
     private BigDecimal totalPrice;
+    @CreatedDate
     private LocalDateTime createdAt;
+    @CreatedBy
     private String createdBy;
+    @LastModifiedDate
     private LocalDateTime updatedAt;
+    @LastModifiedBy
     private String updatedBy;
 //    private long itemId;
 //    private long orderGroupId;
