@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service // 해당 자바 클래스는 서비스로 동작하게 됨
 public class UserApiLogicService implements CrudInterface<UserApiRequest, UserApiResponse> {
@@ -43,7 +44,19 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
 
     @Override
     public Header<UserApiResponse> read(long id) {
-        return null;
+
+//        // 1. id -> repository getOne, getById
+//        Optional<User> optional = userRepository.findById(id);
+//
+//        // 2. user -> userApiResponse : return
+//        return optional
+//                .map(user -> response(user))
+//                .orElseGet(
+//                        () -> Header.ERROR("데이터 없음")
+//                );
+
+        // 위 1, 2를 합친 코드
+        return userRepository.findById(id).map(user -> response(user)).orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
