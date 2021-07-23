@@ -27,6 +27,7 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
         // 1. request data 가져오기
         UserApiRequest userApiRequest = request.getData();
 
+
         // 2. User 생성
         User user = User.builder()
                 .account(userApiRequest.getAccount())
@@ -41,6 +42,25 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
         // 3. 생성된 데이터 -> UserApiResponse : return
         return response(newUser);
     }
+    // 중복된 이메일 가입 방지
+//    public Header<UserApiResponse> create(Header<UserApiRequest> request) {
+//        UserApiRequest userApiRequest = request.getData();
+//        User user = userRepository.findByEmail(userApiRequest.getEmail());
+//        if (user != null) {
+//            return Header.ERROR("중복된 이메일이 존재");
+//        } else {
+//            user = User.builder()
+//                    .account(userApiRequest.getAccount())
+//                    .password(userApiRequest.getPassword())
+//                    .status("REGISTERED")
+//                    .phoneNumber(userApiRequest.getPhoneNumber())
+//                    .email(userApiRequest.getEmail())
+//                    .registeredAt(LocalDateTime.now())
+//                    .build();
+//            User newUser = userRepository.save(user);
+//            return response(newUser);
+//        }
+//    }
 
     @Override
     public Header<UserApiResponse> read(long id) {

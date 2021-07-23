@@ -2,6 +2,7 @@ package com.example.study.repository;
 
 import com.example.study.StudyApplicationTests;
 import com.example.study.model.entity.User;
+import com.example.study.model.network.Header;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,8 +148,31 @@ public class UserRepositoryTest extends StudyApplicationTests {
 //        }else {
 //            System.out.println("데이터 삭제 완료");
 //        }
+    }
+    @Test
+    public void checkEmail() {
+        String account = "Test03";
+        String password = "Test03";
+        String status = "REGISTERED";
+        String email = "Test05@gmail.com";
+        String phoneNumber = "010-1111-3333";
+        LocalDateTime registeredAt = LocalDateTime.now();
+        LocalDateTime createdAt = LocalDateTime.now();
+        String createdBy = "AdminServer";
 
-
+        User user = userRepository.findByEmail(email);
+        if(user != null) {
+            Header.ERROR("중복됨");
+            System.out.println("중복됨");
+        } else {
+            User newUser = new User();
+            newUser.setAccount(account);
+            newUser.setPassword(password);
+            newUser.setStatus(status);
+            newUser.setEmail(email);
+            newUser.setPhoneNumber(phoneNumber);
+            newUser.setRegisteredAt(registeredAt);
+        }
     }
 
 }
