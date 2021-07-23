@@ -2,10 +2,10 @@ package com.example.study.ifs;
 
 import com.example.study.model.network.Header;
 
-public interface CrudInterface {
+public interface CrudInterface<Request, Response> {
 
-    Header create(); // todo request object 추가
-    Header read(long id);
-    Header update();
+    Header<Response> create(Request request); // todo request object 추가
+    Header<Response> read(long id);
+    Header<Response> update(Request request);
     Header delete(long id);
 }
