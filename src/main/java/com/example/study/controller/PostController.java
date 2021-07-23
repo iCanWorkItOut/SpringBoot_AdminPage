@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api") // 클래스를 통한 요청주소는 같아도 되나, 메소드를 통한 요청주소는 일치하면 안 됨
 public class PostController {
 
     // HTML <Form>
