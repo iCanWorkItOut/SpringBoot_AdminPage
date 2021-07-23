@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data    @AllArgsConstructor    @NoArgsConstructor
+@ToString(exclude = {"orderDetailList", "partner"})
 @Entity
 public class Item {
 
@@ -27,11 +28,14 @@ public class Item {
     private String createdBy;
     private LocalDateTime updatedAt;
     private String updatedBy;
-    private long partnerId;
 
 // ERD 설계 전 맵핑 코드
 //    // fetch 타입 : LAZY = 지연로딩, EAGER = 즉시로딩
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
 //    private List<OrderDetail> orderDetailList;
 
+    @ManyToOne
+    private Partner partner;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item") // Item 1 : N OrderDetail
+    private List<OrderDetail> orderDetailList;
 }

@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data    @AllArgsConstructor    @NoArgsConstructor
-@ToString(exclude = "orderGroup")
+@ToString(exclude = {"orderGroup", "item"})
 @Entity // order_detail
 //// 롬복 사용시 ToString메소드가 모든 변수를 참조하게 되는데,
 //// 관계 맵핑 때문에 선언한 User, Item 객체 역시 참조하게 되어, 서로 상호참조하게 됨.
@@ -30,7 +30,7 @@ public class OrderDetail {
     private String createdBy;
     private LocalDateTime updatedAt;
     private String updatedBy;
-    private long itemId;
+//    private long itemId;
 //    private long orderGroupId;
 
 // ERD 설계 전 맵핑 코드
@@ -44,4 +44,7 @@ public class OrderDetail {
 
     @ManyToOne // OrderDetail N : 1 OrderGroup
     private OrderGroup orderGroup;
+
+    @ManyToOne // OrderDetail N : 1 Item
+    private Item item;
 }
