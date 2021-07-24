@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 public class OrderGroupRepositoryTest extends StudyApplicationTests {
 
@@ -32,5 +34,17 @@ public class OrderGroupRepositoryTest extends StudyApplicationTests {
 //        orderGroup.setUserId(1L); // -> User
 
         Assertions.assertNotNull(orderGroupRepository.save(orderGroup));
+    }
+
+    @Test
+    public void read() {
+        Optional<OrderGroup> optional = orderGroupRepository.findById(1L);
+//        optional.ifPresentOrElse(orderGroup -> {
+//            System.out.println(orderGroup);
+//        }, () -> System.out.println("데이터 없음"));
+        optional.ifPresentOrElse(System.out::println, () -> System.out.println("데이터 없음"));
+
+        List<OrderGroup> orderGroupList = orderGroupRepository.findAll();
+        orderGroupList.forEach(System.out::println);
     }
 }
