@@ -8,16 +8,28 @@ import com.example.study.model.network.response.UserApiResponse;
 import com.example.study.service.UserApiLogicService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.swing.text.html.parser.Entity;
+import java.util.List;
 
 @Slf4j // Simple Logging Facade for Java
 @RestController
 @RequestMapping("/api/user")
 public class UserApiController extends CrudController<UserApiRequest, UserApiResponse, Entity> {
 
+    @Autowired
+    private UserApiLogicService userApiLogicService;
+
+    @GetMapping
+    public Header<List<UserApiResponse>> search(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+        log.info("{}", pageable);
+        return userApiLogicService.search(pageable);
+    }
 //    @Autowired
 //    private UserApiLogicService userApiLogicService;
 //    @PostConstruct
