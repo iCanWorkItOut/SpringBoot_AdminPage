@@ -43,9 +43,7 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
         return response(newUser);
     }
     // 중복된 이메일 가입 방지
-//    public Header<UserApiResponse> create(Header<UserApiRequest> request) {
-//        UserApiRequest userApiRequest = request.getData();
-//        User user = userRepository.findByEmail(userApiRequest.getEmail());
+    // findByEmail 리턴이 Optional이 아니라 User일 때
 //        if (user != null) {
 //            return Header.ERROR("중복된 이메일이 존재");
 //        } else {

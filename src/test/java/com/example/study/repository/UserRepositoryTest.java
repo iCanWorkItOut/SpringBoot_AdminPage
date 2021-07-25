@@ -151,7 +151,7 @@ public class UserRepositoryTest extends StudyApplicationTests {
     }
     @Test
     public void checkEmail() {
-        String account = "Test03";
+        String account = "Test000";
         String password = "Test03";
         String status = "REGISTERED";
         String email = "Test05@gmail.com";
@@ -160,19 +160,38 @@ public class UserRepositoryTest extends StudyApplicationTests {
         LocalDateTime createdAt = LocalDateTime.now();
         String createdBy = "AdminServer";
 
-        User user = userRepository.findByEmail(email);
-        if(user != null) {
-            Header.ERROR("중복됨");
-            System.out.println("중복됨");
-        } else {
-            User newUser = new User();
-            newUser.setAccount(account);
-            newUser.setPassword(password);
-            newUser.setStatus(status);
-            newUser.setEmail(email);
-            newUser.setPhoneNumber(phoneNumber);
-            newUser.setRegisteredAt(registeredAt);
-        }
+//        User user = userRepository.findByEmail(email);
+//        if(user != null) {
+//            Header.ERROR("중복됨");
+//            System.out.println("중복됨");
+//        } else {
+//            User newUser = new User();
+//            newUser.setAccount(account);
+//            newUser.setPassword(password);
+//            newUser.setStatus(status);
+//            newUser.setEmail(email);
+//            newUser.setPhoneNumber(phoneNumber);
+//            newUser.setRegisteredAt(registeredAt);
+//        }
+        Optional<User> optional = userRepository.findByEmail(email);
+        optional.ifPresentOrElse(
+                user -> {
+                    System.out.println("중복데이터");
+                    Header.ERROR("중복데이터");
+                },
+                () -> {
+                    User newUser = User.builder()
+                            .account(account)
+                            .password(password)
+                            .status(status)
+                            .phoneNumber(phoneNumber)
+                            .email(email)
+                            .registeredAt(registeredAt)
+                            .build();
+                    User savedUser = userRepository.save(newUser);
+                    Header.OK(savedUser);
+                }
+        );
     }
 
 }
