@@ -1,6 +1,7 @@
 package com.example.study.model.entity;
 
 //import javax.persistence.Column;
+import com.example.study.model.enumclass.UserStatus;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
@@ -28,7 +29,10 @@ public class User {
     private long id;
     private String account;
     private String password;
-    private String status;
+
+    @Enumerated(EnumType.STRING) // Enum 설정
+    private UserStatus status; // REGISTERED, UNREGISTERED, WATING..
+
     private String email;
 //    JPA에서는 SnakeCase로 된 DB의 컬럼명을 자동으로 CamelCase로 변환하여 자바와 Mapping 시켜준다.
 //    DB의 컬럼명과 자바의 변수명이 다른 경우 @Table과 같이 @Column 어노테이션을 이용하여 맵핑시켜주면 된다.
