@@ -11,19 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.swing.text.html.parser.Entity;
 
 @Slf4j // Simple Logging Facade for Java
 @RestController
 @RequestMapping("/api/user")
-public class UserApiController extends CrudController<UserApiRequest, UserApiResponse> {
+public class UserApiController extends CrudController<UserApiRequest, UserApiResponse, Entity> {
 
-    @Autowired
-    private UserApiLogicService userApiLogicService;
-
-    @PostConstruct
-    public void init() {
-        this.baseService = userApiLogicService;
-    }
+//    @Autowired
+//    private UserApiLogicService userApiLogicService;
+//    @PostConstruct
+//    public void init() {
+//        this.baseService = userApiLogicService;
+//    }
 
 //    @Override
 //    @PostMapping("") // /api/user
