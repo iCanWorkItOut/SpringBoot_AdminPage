@@ -4,14 +4,19 @@ import com.example.study.ifs.CrudInterface;
 import com.example.study.model.entity.User;
 import com.example.study.model.enumclass.UserStatus;
 import com.example.study.model.network.Header;
+import com.example.study.model.network.Pagination;
 import com.example.study.model.network.request.UserApiRequest;
 import com.example.study.model.network.response.UserApiResponse;
 import com.example.study.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service // 해당 자바 클래스는 서비스로 동작하게 됨
 //public class UserApiLogicService implements CrudInterface<UserApiRequest, UserApiResponse> {
@@ -42,7 +47,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         User newUser = baseRepository.save(user);
 
         // 3. 생성된 데이터 -> UserApiResponse : return
-        return response(newUser);
+        return Header.OK(response(newUser));
     }
     // 중복된 이메일 가입 방지
     // findByEmail 리턴이 Optional이 아니라 User일 때
@@ -76,7 +81,12 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 //                );
 
         // 위 1, 2를 합친 코드
-        return baseRepository.findById(id).map(user -> response(user)).orElseGet(() -> Header.ERROR("데이터 없음"));
+        return baseRepository.findById(id)
+                .map(user -> response(user))
+//                .map(userApiResponse -> Header.OK(userApiResponse))
+                // 위의 .map(userApiResponse -> Header.OK(userApiResponse))과 같은 의미
+                .map(Header::OK)
+                .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
@@ -104,6 +114,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         })
                 .map(user -> baseRepository.save(user)) // update
                 .map(updateUser -> response(updateUser)) // userApiResponse : return
+                .map(Header::OK)
                 .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
@@ -122,7 +133,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
                 .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
-    private  Header<UserApiResponse> response(User user) {
+    private UserApiResponse response(User user) {
         // user -> userApiResponse
 
         UserApiResponse userApiResponse = UserApiResponse.builder()
@@ -137,6 +148,26 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
                 .build();
 
         // Header + data return
-        return Header.OK(userApiResponse);
+        return userApiResponse;
+    }
+
+    public Header<List<UserApiResponse>> search(Pageable pageable) {
+
+        Page<User> users = baseRepository.findAll(pageable);
+
+        List<UserApiResponse> userApiResponseList = users.stream()
+                .map(user -> response(user))
+                .collect(Collectors.toList());
+        // 데이터는 List<UserApiResponse>의 형태
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(users.getTotalPages())
+                .totalElements(users.getTotalElements())
+                .currentPage(users.getNumber())
+                .currentElements(users.getNumberOfElements())
+                .build();
+
+        return Header.OK(userApiResponseList, pagination);
+        // Header<List<UserApiResponse>>
     }
 }

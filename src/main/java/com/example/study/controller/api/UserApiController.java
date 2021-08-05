@@ -9,9 +9,13 @@ import com.example.study.model.network.response.UserApiResponse;
 import com.example.study.service.UserApiLogicService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Slf4j // Simple Logging Facade for Java
 @RestController
@@ -19,6 +23,14 @@ import javax.annotation.PostConstruct;
 ////public class UserApiController implements CrudInterface<UserApiRequest, UserApiResponse> {
 //public class UserApiController extends CrudController<UserApiRequest, UserApiResponse> {
 public class UserApiController extends CrudController<UserApiRequest, UserApiResponse, User> {
+    @Autowired
+    private UserApiLogicService userApiLogicService;
+
+    @GetMapping("")
+    public Header<List<UserApiResponse>> search(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) { // 스프링에서 페이지를 편하게 처리하기 위해 만들어논 객체(Pagealbe)
+        log.info("{}", pageable);
+        return userApiLogicService.search(pageable);
+    }
 
 //    @Autowired
 //    private UserApiLogicService userApiLogicService;
